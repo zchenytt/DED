@@ -9,7 +9,6 @@ include("src/Case118.jl");
 include("src/WindGen.jl");
 include("src/Settings.jl");
 include("src/Models.jl");
-include("src/Ben.jl");
 include("src/MultiTheta.jl");
 
 const T, S = 12, 1000
