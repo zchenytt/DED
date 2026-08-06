@@ -45,14 +45,6 @@ function Model(e::Gurobi.Env)
     JuMP.set_string_names_on_creation(m, false)
     m
 end
-function Model!(mv::Vector{JuMP.Model}, i, #=with existing ones=# ev::Vector{Gurobi.Env})
-    m = JuMP.direct_model(Gurobi.Optimizer(ev[i]))
-    JuMP.set_string_names_on_creation(m, false)
-    mv[i] = m
-end
-Model!(mv::Vector{JuMP.Model}, #=with existing ones=# ev::Vector{Gurobi.Env}) = Threads.@threads for i=eachindex(mv)
-    Model!(mv, i, ev)
-end
 
 # ✅ e.g. setting `x::JuMP.VariableRef`'s "Obj" Attribute
 getxdblattrelement(m, i::Integer, str) = (r=m.refd;Gurobi.GRBgetdblattrelement(m.o, str,i,r);r.x)
