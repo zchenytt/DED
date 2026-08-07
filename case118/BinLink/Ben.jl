@@ -3,10 +3,22 @@ import ..Models, ..Settings, Gurobi
 
 const EVAL_MIPGap = 1e-4
 const EVAL_TimLim = 45.
-const MAIN_MIPGap = 9e-4
+const MAIN_MIPGap = 2e-4
 const MAIN_TimLim = 15. # 🟥 if MIP-sub is too hard, tune its hardness down!
 const W_fg, W_bg = Threads.nthreads(:interactive), Threads.nthreads(:default)
 const ϵ = Models.SB_CUT_COT
+
+function para_build(ch, envs, a...)
+    i = 1; S = length(envs)
+    @assert W_bg ≤ S
+    for _=1:W_bg Models._1(ch, i, envs, a...); i+=1 end
+    while i ≤ S
+        take!(ch)
+        Models._1(ch, i, envs, a...)
+        i += 1
+    end
+    for _=1:W_bg take!(ch) end
+end
 
 function _6(ch, sub, s, Xl)
     (; o, N, Bv, Pi, Xl2, Cd) = n = sub[s]
@@ -64,20 +76,27 @@ function get_ub(s::Int, Xl::Vector{Float64}, sub) # ub of Q_s(x)
     Cd[end] = ub = Settings.getmodeldblattr(n, "ObjVal")
     Cd[N+1] = agap = Settings.getmodeldblattr(n, "MIPGap")abs(ub)
 end
-function get_ub(Xl::Vector{Float64}, sub)
-    Threads.@threads for s=eachindex(sub)
-        get_ub(s, Xl, sub)
+_9(s, Xl, sub, ch) = (get_ub(s, Xl, sub); Gurobi.GRBreset(sub[s].o, 0); put!(ch, s))
+_8(s, Xl, sub, ch) = Threads.@spawn(_9(s, Xl, sub, ch))
+
+function get_ub(Xl::Vector{Float64}, sub, ch)
+    i, S = 1, length(sub)
+    for _=1:W_bg _8(i, Xl, sub, ch); i+=1 end
+    while i ≤ S
+        take!(ch)
+        _8(i, Xl, sub, ch)
+        i+=1
     end
+    for _=1:W_bg take!(ch) end
     ub = sum(n.Cd[end] for n=sub)/length(sub)
     errsum = sum(n.Cd[end-1] for n=sub)
     erravg = errsum/length(sub)
-    printstyled("ub = $ub, erravg = $erravg, errsum = $errsum"; color = 27)
+    printstyled("ub = $ub, erravg = $erravg, errsum = $errsum\n"; color = 27)
     ub
 end
 
-
 function _4(ch, s, Θs, n, Vμ)
-    (; o, N, Bv, Pi, Xl, Xl2, Cd) = n
+    (; o, N, Bv, Pi, Xl, Xl2, Cd, rtCnt) = n
     _en2 = Gurobi.GRBgetenv(o)
     Gurobi.GRBsetdblparam(_en2, "TimeLimit", MAIN_TimLim)
     Gurobi.GRBsetdblparam(_en2, "MIPGap", MAIN_MIPGap)
@@ -94,10 +113,11 @@ function _4(ch, s, Θs, n, Vμ)
     Bv .= 'B';       Gurobi.GRBsetcharattrarray(o, "VType", 0, length(Bv), Bv)
     Settings.opt_ass_time(n, "biased - subMIP")
     GRBrgap, Rt = Settings.getmodeldblattr(n, "MIPGap"), Settings.getmodeldblattr(n, "Runtime")
+    Rt+0.1>MAIN_TimLim ? rtCnt.o += 1 : rtCnt.n += 1
     GRBagap = abs(Settings.getmodeldblattr(n, "ObjVal"))GRBrgap
     Cd[end] = Obn = Settings.getmodeldblattr(n, "ObjBound")
     Cd[N+1] = ν = Pi'Xl + Obn - Θs # level of separation, at the current x_che
-    ν>0 && @ccall(printf("  GRBgap=(r=%.1e, a=%.1f; t=%.1f), vio=%.4e <s=%d\n"::Cstring;GRBrgap::Cdouble,GRBagap::Cdouble,Rt::Cdouble,ν::Cdouble,s::Cint)::Cint)
+    (rand()<5e-5 && ν>0) && @ccall(printf("  GRBgap=(r=%.1e, a=%.1f; t=%.1f), vio=%.4e <s=%d\n"::Cstring;GRBrgap::Cdouble,GRBagap::Cdouble,Rt::Cdouble,ν::Cdouble,s::Cint)::Cint)
     put!(ch, s)
 end
 function _5(ch, s, sub, mst, CanSpawn, Vμ)
@@ -115,19 +135,21 @@ function root_train(mst, sub, SeqSeconds, AbsSeconds)
         _5(ch, i, sub, mst, CanSpawn, Vμ)
         i = ifelse(i<S, i+1, 1)
     end
-    iA = 0
-    while proceed.value
-        (t = 1e-9(time_ns() - t0)) > AbsSeconds && break
+    iA = iB = ter = 0
+    while true # proceed.value
+        (t = 1e-9(time_ns() - t0)) > AbsSeconds && (ter = 3; break)
         if ȷ > 0 && (!isready(ch) || i === i0)
             Settings.opt_ass_opt(mst); load_che(mst)
             lb = Settings.getmodeldblattr(mst, "ObjBound")
-            (st = Σt.x += Settings.getmodeldblattr(mst, "Runtime")) > SeqSeconds && break
+            (st = Σt.x += Settings.getmodeldblattr(mst, "Runtime")) > SeqSeconds && (ter = 4; break)
             nCμ = Settings.getmodelintattr(mst, "NumConstrs")/S
-            @ccall(printf("M> t=%.1fs, ȷ=%d, nCμ=%.1f, st=%.1fs, lb=%.1f, Vμ=%.1e\n"::Cstring;t::Cdouble,ȷ::Cint,nCμ::Cdouble,st::Cdouble,lb::Cdouble,Vμ::Cdouble)::Cint)
+            rand()<0.0001 && @ccall(printf("M> t=%.1fs, ȷ=%d, nCμ=%.1f, st=%.1fs, lb=%.1f, Vμ=%.1e\n"::Cstring;t::Cdouble,ȷ::Cint,nCμ::Cdouble,st::Cdouble,lb::Cdouble,Vμ::Cdouble)::Cint)
             ȷ = iA = 0
         else
             if iA === S
                 @ccall(printf("idle-M> t=%.1fs, lb=%.1f, Vμ=%.1e\n"::Cstring;t::Cdouble,lb::Cdouble,Vμ::Cdouble)::Cint)
+                iB += 1
+                iB === 2 && (ter = 2; break)
                 iA = 0
             else
                 iA += 1
@@ -136,7 +158,7 @@ function root_train(mst, sub, SeqSeconds, AbsSeconds)
         s = take!(ch)
         (; Ci, Cd), CanSpawn[s] = sub[s], true
         ν, Cd[N+1] = Cd[N+1], -1.
-        ν>Vμ && (Gurobi.GRBaddconstr(o, N+1, Ci, Cd, Cchar('<'), -Cd[end], C_NULL); ȷ+=1)
+        ν>Vμ && (Gurobi.GRBaddconstr(o, N+1, Ci, Cd, Cchar('<'), -Cd[end], C_NULL); ȷ+=1; iB=0)
         ν = ν>ϵ ? (α)ν+(1-α)ϵ : ϵ; VΣ=VΣ-first(Vv)+ν; Vμ=VΣ/S; push!(Vv,ν)
         while true
             brkFlag = CanSpawn[i]
@@ -149,13 +171,15 @@ function root_train(mst, sub, SeqSeconds, AbsSeconds)
         s = take!(ch)
         (; Ci, Cd), CanSpawn[s] = sub[s], true
         ν, Cd[N+1] = Cd[N+1], -1.
-        ν>Vμ && (Gurobi.GRBaddconstr(o, N+1, Ci, Cd, Cchar('<'), -Cd[end], C_NULL); ȷ+=1)
+        ν>Vμ && (Gurobi.GRBaddconstr(o, N+1, Ci, Cd, Cchar('<'), -Cd[end], C_NULL); ȷ+=1; iB=0)
         ν = ν>ϵ ? (α)ν+(1-α)ϵ : ϵ; VΣ=VΣ-first(Vv)+ν; Vμ=VΣ/S; push!(Vv,ν)
     end
+    nRt, oRt = sum(n.rtCnt.n for n=sub), sum(n.rtCnt.o for n=sub)
+    ħ = round(oRt/(oRt+nRt); digits = 2)
+    printstyled("root_train> ter=$ter, seqTime=$(Σt.x), Hardness=$ħ\n";color=208)
 end
 function run_a_round(mst, sub; mstVType, addcut)
     (; o, S, N, Θ, Bv, CanSpawn, ch, Xl) = mst
-    @assert S ≥ W_bg
     if mstVType === 'B'
         Gurobi.GRBsetintparam(Gurobi.GRBgetenv(o), "OutputFlag", 1)
     elseif mstVType === 'C'
