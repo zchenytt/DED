@@ -1,8 +1,12 @@
 module Models
 import DataStructures.CircularBuffer
 import ..Settings, JuMP, Gurobi, Random
+mutable struct RtCnt # to give a percentage on the hardness of the current physical sub-MIP.
+    n::Int # normal
+    o::Int # over time
+end
 const SB_CUT_COT = 0.005
-const SubMIPTy = @NamedTuple{m::JuMP.Model, o::Gurobi.Optimizer, refd::Base.RefValue{Float64}, refi::Base.RefValue{Int32}, Bv::Vector{Int8}, N::Int64, Pi::Vector{Float64}, Xl::Vector{Float64}, Xl2::Vector{Float64}, Ci::Vector{Int32}, Cd::Vector{Float64}}
+const SubMIPTy = @NamedTuple{m::JuMP.Model, o::Gurobi.Optimizer, refd::Base.RefValue{Float64}, refi::Base.RefValue{Int32}, Bv::Vector{Int8}, N::Int64, Pi::Vector{Float64}, Xl::Vector{Float64}, Xl2::Vector{Float64}, Ci::Vector{Int32}, Cd::Vector{Float64}, rtCnt::RtCnt}
 
 function _9(genv)
     m = Settings.Model(genv)
@@ -15,6 +19,7 @@ function retrofit!(mst)
     JuMP.@variable(m, θμ) # GRBindex = S+N
     JuMP.@constraint(m, sum(m[:θ]) == S * θμ)
 end
+
 function multi_θ_mst!(genv, S, EVLmax, EEmax)
     m, o, ge, refi, refd = _9(genv)
     JuMP.@variable(m, θ[1:S]) # Notice the strict order
@@ -23,7 +28,7 @@ function multi_θ_mst!(genv, S, EVLmax, EEmax)
     JuMP.@variable(m, 0 <= bx0[a=eachindex(EVLmax)] <= 1)
     JuMP.@constraint(m, [e=eachindex(EEmax)], bES0[e,0] + bES0[e,1] <= true)
     N = length(bx0)+length(bES0); Xl=fill(0.,N); Bv=fill(Cchar('C'), N)
-    printstyled("multi_θ master built with N = $N\n"; color = 30)
+    printstyled("multi_θ master built with N = $N, S = $S\n"; color = 30)
     Σt, CanSpawn, ch, Vv, rng = Ref(0.), trues(S), Channel{Int}(), CircularBuffer(fill(SB_CUT_COT, S)), Random.Xoshiro(1)
     proceed = Threads.Atomic{Bool}(true)
     Ci, Cd = Cint[range(S; length=N); S+N], Vector{Cdouble}(undef, N+2) # refers to indicies of _master_
@@ -71,8 +76,11 @@ bx_scalar(m, a, t, bx0) = t==0 ? bx0[a] : _01v(m)
 bES_scalar(m, e, t, u, bES0) = t==0 ? bES0[e,u] : _01v(m)
 _η(rng) = rand(rng, 0.93:1e-4:0.97)
 
+_1(ch, s, envs, a...) = (gs = envs[s]; Threads.@spawn(_3(ch, s, gs, a...)))
+_3(ch, s, gs, a...) = (MIP_sub!(s, gs, a...); put!(ch, s))
 function MIP_sub!(
-        Sb, s, S, genv, T, Δtˈ1h_ratio,
+        s, genv,
+        Sb, S, T, Δtˈ1h_ratio,
         F, CaD, Ratea,
         Ggvec, Gnode, GPmax, GPref,
         LmuTup, Ltype, LPmax, Lnode,
@@ -198,7 +206,8 @@ function MIP_sub!(
     JuMP.@objective(m, Min, Qy)
 
     Ci, Cd = Cint[range(S; length=N); s-1], Vector{Cdouble}(undef, N+2) # refers to indicies of _master_
-    Sb[s] = (; m, o, refd, refi, Bv, N, Pi, Xl, Xl2, Ci, Cd) # Xl used to store local static x_che
+    rtCnt = RtCnt(0,0)
+    Sb[s] = (; m, o, refd, refi, Bv, N, Pi, Xl, Xl2, Ci, Cd, rtCnt) # Xl used to store local static x_che
 end
 
 function prem(
