@@ -14,7 +14,7 @@ const mu_06 = Matrix(transpose([
 const Deps = MvNormal(
     [1.31 0.6435 0.55
     0.6435 0.79 0.405
-    0.55 0.405 1]/200/8 # The last coeff is for smaller variance for intra-day
+    0.55 0.405 1]/200/4 # The last coeff is for smaller variance for intra-day
 );
 const regression_vec = 0.12 .+ [0.79, 0.85, 0.87] # inertia coefficients
 
