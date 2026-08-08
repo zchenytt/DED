@@ -1,0 +1,650 @@
+amd@amd:~/julia_projects/ded/c118$ julia --project=. --threads=127,1 src/script.jl
+    test> Ratea_K=1.04, SEEDi=0 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 391.489434 seconds (7.45 G allocations: 1010.416 GiB, 78.29% gc time, 222 lock conflicts, 124.49% compilation time: <1% of which was recompilation)
+  GRBgap=(r=1.7e-04, a=1.4; t=7.0), vio=8.4107e+03 <s=4416
+mst's lb = -56416.769765138764, xHa = 0x33ad3773e645a5d4
+furnish_ini_lb: 418.631103 seconds (714.32 k allocations: 35.827 MiB, 13 lock conflicts, 5.74% compilation time)
+  GRBgap=(r=1.2e-04, a=0.1; t=7.5), vio=5.6244e+04 <s=4218
+  GRBgap=(r=0.0e+00, a=0.0; t=10.0), vio=2.2737e-13 <s=2032
+idle-M> t=6127.8s, lb=1343.1, Vμ=5.0e-03
+idle-M> t=6567.9s, lb=1343.1, Vμ=5.0e-03
+root_train> ter=2, seqTime=326.35855293273926, Hardness=0.01
+root_train: 6579.390738 seconds (759.95 k allocations: 49.200 MiB, 706 lock conflicts, 0.00% compilation time)
+x_int_che = f05ad870a5c48516, vio_by_LP = 5.5489e+02
+x_int_che = 4d53c72b2466689c, vio_by_LP = 2.6141e+01
+x_int_che = efa5f0457a84167c, vio_by_LP = 3.1361e+02
+x_int_che = 5baf51e9d8381722, vio_by_LP = -2.7583e+02
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -2.7583e+02
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -2.7583e+02
+leaf_train: 49.900976 seconds (578.28 k allocations: 30.412 MiB, 1079 lock conflicts, 24.18% compilation time)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+DegenMoves  0
+Threads  1
+
+Optimize a model with 20984 rows, 6111 columns and 194739 nonzeros (Min)
+Model fingerprint: 0x902ea9fa
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 1e+05]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 9e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 1343.07 (0.02s)
+MIP start from previous solve produced solution with objective 1343.07 (0.03s)
+Loaded MIP start from previous solve with objective 1343.07
+
+Presolve removed 20984 rows and 6111 columns
+Presolve time: 0.33s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.36 seconds (0.54 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 4: 1343.07 1343.07 1343.07 1343.07 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.343065658635e+03, best bound 1.343065658635e+03, gap 0.0000%
+mst's lb = 1343.065658634843, xHa = 0x968d9fa6235b9c9a
+ub = 1343.6980164131637, erravg = 0.007086681657987067, errsum = 43.20041138708916
+agap = 0.6323577783207384, rgap = 0.0004706100407952819
+result_analysis: 377.967216 seconds (551.23 k allocations: 27.309 MiB, 10 lock conflicts, 2.27% compilation time)
+    test> Ratea_K=1.1, SEEDi=1 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 430.162451 seconds (7.44 G allocations: 1009.869 GiB, 79.44% gc time, 54 lock conflicts)
+mst's lb = -60557.562433977226, xHa = 0x1e83f8374b287cd4
+furnish_ini_lb: 354.199824 seconds (41.69 k allocations: 2.870 MiB, 9 lock conflicts)
+M> t=232.4s, ȷ=1, nCμ=1.6, st=50.8s, lb=-27460.3, Vμ=1.7e+04
+M> t=339.1s, ȷ=1, nCμ=1.8, st=77.8s, lb=-11593.6, Vμ=2.5e+04
+  GRBgap=(r=0.0e+00, a=0.0; t=7.4), vio=6.1993e+04 <s=5735
+M> t=412.9s, ȷ=1, nCμ=2.0, st=97.7s, lb=-1289.2, Vμ=2.9e+04
+  GRBgap=(r=0.0e+00, a=0.0; t=10.2), vio=1.0379e+03 <s=4117
+M> t=1915.5s, ȷ=1, nCμ=3.1, st=239.9s, lb=324.9, Vμ=1.3e+02
+M> t=2030.1s, ȷ=1, nCμ=3.1, st=247.7s, lb=337.6, Vμ=9.7e+01
+  GRBgap=(r=0.0e+00, a=0.0; t=7.4), vio=5.1342e+00 <s=2058
+idle-M> t=5818.4s, lb=372.2, Vμ=5.0e-03
+idle-M> t=6206.4s, lb=372.2, Vμ=5.0e-03
+root_train> ter=2, seqTime=412.2808060646057, Hardness=0.01
+root_train: 6217.603212 seconds (656.76 k allocations: 45.189 MiB, 1104 lock conflicts)
+x_int_che = 13f0ef88e037ee9c, vio_by_LP = 1.4885e+02
+x_int_che = 8d18798a1afbb462, vio_by_LP = -8.2157e+01
+x_int_che = a91ae2c91297b6f2, vio_by_LP = -8.2151e+01
+x_int_che = a91ae2c91297b6f2, vio_by_LP = -8.2151e+01
+leaf_train: 38.721861 seconds (166.72 k allocations: 10.108 MiB, 719 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 24790 rows, 6111 columns and 217689 nonzeros (Min)
+Model fingerprint: 0x43c9691f
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 6e+04]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 7e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 372.299 (0.03s)
+Loaded MIP start from previous solve with objective 372.299
+
+Presolve removed 24790 rows and 6111 columns
+Presolve time: 0.67s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.70 seconds (0.63 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 3: 372.299 372.299 372.299 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.722992438179e+02, best bound 3.722992438179e+02, gap 0.0000%
+mst's lb = 372.29924381794063, xHa = 0xa91ae2c91297b6f2
+ub = 372.44359564102626, erravg = 0.0015747109425064227, errsum = 9.599437905519153
+agap = 0.14435182308562844, rgap = 0.0003875803605568227
+result_analysis: 358.400924 seconds (53.46 k allocations: 2.496 MiB, 5 lock conflicts)
+    test> Ratea_K=1.06, SEEDi=2 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 399.339497 seconds (7.44 G allocations: 1009.869 GiB, 83.68% gc time, 60 lock conflicts)
+mst's lb = -61178.96163838505, xHa = 0x1bded04fb7c4d7b4
+furnish_ini_lb: 396.894567 seconds (41.69 k allocations: 2.870 MiB, 6 lock conflicts)
+  GRBgap=(r=0.0e+00, a=0.0; t=8.1), vio=2.9333e+03 <s=3427
+M> t=2333.9s, ȷ=1, nCμ=3.5, st=322.9s, lb=661.4, Vμ=8.4e+01
+idle-M> t=4208.4s, lb=667.7, Vμ=5.0e-03
+idle-M> t=4570.6s, lb=667.7, Vμ=5.0e-03
+root_train> ter=2, seqTime=345.3941650390625, Hardness=0.01
+root_train: 4578.777176 seconds (488.60 k allocations: 33.612 MiB, 784 lock conflicts)
+x_int_che = 6c4bce2f60261852, vio_by_LP = -7.8051e+01
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -7.8051e+01
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -7.8051e+01
+leaf_train: 31.724077 seconds (125.07 k allocations: 7.798 MiB, 435 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+DegenMoves  0
+Threads  1
+
+Optimize a model with 22156 rows, 6111 columns and 208106 nonzeros (Min)
+Model fingerprint: 0x5a4a205d
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 1e+05]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 667.742 (0.03s)
+Loaded MIP start from previous solve with objective 667.742
+
+Presolve removed 22156 rows and 6111 columns
+Presolve time: 0.19s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.22 seconds (0.21 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 3: 667.742 667.742 667.742 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 6.677415833413e+02, best bound 6.677415833413e+02, gap 0.0000%
+mst's lb = 667.7415833412855, xHa = 0x968d9fa6235b9c9a
+ub = 667.7566008877127, erravg = 0.003922876749801206, errsum = 23.91385666678815
+agap = 0.015017546427202433, rgap = 2.2489551443202768e-5
+result_analysis: 307.618392 seconds (53.46 k allocations: 2.496 MiB, 5 lock conflicts)
+    test> Ratea_K=1.0, SEEDi=3 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 392.321602 seconds (7.44 G allocations: 1009.869 GiB, 83.47% gc time, 64 lock conflicts)
+mst's lb = -50804.884403580065, xHa = 0x1bded04fb7c4d7b4
+furnish_ini_lb: 483.162824 seconds (41.69 k allocations: 2.870 MiB, 4 lock conflicts)
+M> t=458.6s, ȷ=1, nCμ=1.7, st=78.3s, lb=-14467.8, Vμ=1.9e+04
+  GRBgap=(r=0.0e+00, a=0.0; t=8.0), vio=3.8924e+02 <s=1133
+M> t=1881.0s, ȷ=1, nCμ=2.6, st=204.9s, lb=997.8, Vμ=9.8e+02
+  GRBgap=(r=0.0e+00, a=0.0; t=14.1), vio=1.7501e+03 <s=2151
+  GRBgap=(r=4.7e-03, a=9.1; t=15.0), vio=6.0953e+00 <s=1616
+root_train> ter=3, seqTime=395.25744700431824, Hardness=0.31
+root_train: 8114.235050 seconds (538.88 k allocations: 37.063 MiB, 863 lock conflicts)
+x_int_che = 1af9c127e51ea904, vio_by_LP = 4.3652e+02
+x_int_che = ec8a01c7aff198c2, vio_by_LP = -1.3199e+02
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -1.3199e+02
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -1.3199e+02
+leaf_train: 39.417810 seconds (166.72 k allocations: 10.108 MiB, 543 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+DegenMoves  0
+Threads  1
+
+Optimize a model with 22747 rows, 6111 columns and 201196 nonzeros (Min)
+Model fingerprint: 0xd6927b08
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 1e+05]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 9e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 1916.37 (0.03s)
+Loaded MIP start from previous solve with objective 1916.37
+
+Presolve removed 22747 rows and 6111 columns
+Presolve time: 0.23s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.26 seconds (0.43 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 2: 1916.37 1916.37 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.916371721972e+03, best bound 1.916371721972e+03, gap 0.0000%
+mst's lb = 1916.371721972222, xHa = 0x968d9fa6235b9c9a
+ub = 1920.404991293941, erravg = 0.01958900978382077, errsum = 119.41460364217141
+agap = 4.03326932171899, rgap = 0.002100218099829782
+result_analysis: 497.150672 seconds (53.46 k allocations: 2.496 MiB, 5 lock conflicts)
+    test> Ratea_K=1.08, SEEDi=4 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 393.733848 seconds (7.44 G allocations: 1009.869 GiB, 83.58% gc time, 72 lock conflicts)
+mst's lb = -52367.56781588936, xHa = 0x1bded04fb7c4d7b4
+furnish_ini_lb: 291.245974 seconds (41.69 k allocations: 2.870 MiB, 9 lock conflicts)
+  GRBgap=(r=0.0e+00, a=0.0; t=6.4), vio=3.4213e+02 <s=4988
+idle-M> t=4107.8s, lb=221.6, Vμ=5.0e-03
+idle-M> t=4391.3s, lb=221.6, Vμ=5.0e-03
+root_train> ter=2, seqTime=299.8833796977997, Hardness=0.0
+root_train: 4397.229205 seconds (622.74 k allocations: 42.840 MiB, 717 lock conflicts)
+x_int_che = 6537c7f717353dd4, vio_by_LP = -1.5740e+01
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -1.5740e+01
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -1.5740e+01
+leaf_train: 31.632074 seconds (125.07 k allocations: 7.798 MiB, 397 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 21061 rows, 6111 columns and 197534 nonzeros (Min)
+Model fingerprint: 0xbc19df47
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 1e+05]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [4e-02, 7e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 221.589 (0.02s)
+Loaded MIP start from previous solve with objective 221.589
+
+Presolve removed 21061 rows and 6111 columns
+Presolve time: 0.18s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.21 seconds (0.20 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 2: 221.589 221.589 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.215885822554e+02, best bound 2.215885822554e+02, gap 0.0000%
+mst's lb = 221.58858225537423, xHa = 0x968d9fa6235b9c9a
+ub = 221.59115983382353, erravg = 0.0008018170300992708, errsum = 4.887876615485155
+agap = 0.0025775784492907405, rgap = 1.1632135736929793e-5
+result_analysis: 261.670215 seconds (53.46 k allocations: 2.496 MiB, 5 lock conflicts)
+    test> Ratea_K=1.04, SEEDi=5 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 386.942834 seconds (7.44 G allocations: 1009.869 GiB, 83.29% gc time, 65 lock conflicts)
+mst's lb = -65011.74543861005, xHa = 0x1bded04fb7c4d7b4
+furnish_ini_lb: 373.088894 seconds (41.69 k allocations: 2.870 MiB, 3 lock conflicts)
+  GRBgap=(r=0.0e+00, a=0.0; t=8.5), vio=1.2190e+02 <s=5081
+idle-M> t=6738.3s, lb=1455.4, Vμ=5.0e-03
+idle-M> t=7175.6s, lb=1455.4, Vμ=5.0e-03
+root_train> ter=2, seqTime=346.3450267314911, Hardness=0.01
+root_train: 7184.993126 seconds (666.74 k allocations: 45.916 MiB, 917 lock conflicts)
+x_int_che = e5c5deccf9425850, vio_by_LP = 8.8581e+01
+x_int_che = a19d215aac0ad01e, vio_by_LP = -2.3233e+02
+x_int_che = c67be6d41d9177de, vio_by_LP = -2.3233e+02
+x_int_che = c67be6d41d9177de, vio_by_LP = -2.3233e+02
+leaf_train: 39.961459 seconds (166.72 k allocations: 10.108 MiB, 601 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+DegenMoves  0
+Threads  1
+
+Optimize a model with 21138 rows, 6111 columns and 192939 nonzeros (Min)
+Model fingerprint: 0xaeed218f
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 1e+05]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 9e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 1455.43 (0.02s)
+MIP start from previous solve produced solution with objective 1455.43 (0.02s)
+Loaded MIP start from previous solve with objective 1455.43
+
+Presolve removed 21138 rows and 6111 columns
+Presolve time: 0.27s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.29 seconds (0.47 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 4: 1455.43 1455.43 1455.43 1455.43 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.455433610532e+03, best bound 1.455433610532e+03, gap 0.0000%
+mst's lb = 1455.4336105323887, xHa = 0xc67be6d41d9177de
+ub = 1456.625406312622, erravg = 0.012458882164797286, errsum = 75.94934567660425
+agap = 1.1917957802334058, rgap = 0.0008181896148923972
+result_analysis: 379.374066 seconds (53.46 k allocations: 2.496 MiB, 3 lock conflicts)
+    test> Ratea_K=1.1, SEEDi=6 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 391.545128 seconds (7.44 G allocations: 1009.869 GiB, 83.25% gc time, 56 lock conflicts)
+mst's lb = -59408.00086676972, xHa = 0x33ad3773e645a5d4
+furnish_ini_lb: 320.895330 seconds (41.69 k allocations: 2.870 MiB, 6 lock conflicts)
+  GRBgap=(r=0.0e+00, a=0.0; t=7.4), vio=6.4473e+01 <s=858
+M> t=1088.0s, ȷ=1, nCμ=2.5, st=163.2s, lb=-796.9, Vμ=1.2e+03
+  GRBgap=(r=0.0e+00, a=0.0; t=5.8), vio=1.1596e-01 <s=4431
+idle-M> t=4248.0s, lb=389.2, Vμ=5.0e-03
+idle-M> t=4595.1s, lb=389.2, Vμ=5.0e-03
+root_train> ter=2, seqTime=362.31537437438965, Hardness=0.0
+root_train: 4602.830226 seconds (536.03 k allocations: 36.870 MiB, 812 lock conflicts)
+x_int_che = 11cf54dbbf54c2e4, vio_by_LP = -5.7058e+01
+x_int_che = ca13674f3bb50404, vio_by_LP = -5.9545e+01
+x_int_che = 613578041b46ee0c, vio_by_LP = -5.9545e+01
+x_int_che = 613578041b46ee0c, vio_by_LP = -5.9545e+01
+leaf_train: 36.950330 seconds (166.72 k allocations: 10.108 MiB, 528 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 22778 rows, 6111 columns and 209843 nonzeros (Min)
+Model fingerprint: 0x2ee1a5fb
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 7e+04]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 7e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 389.255 (0.03s)
+MIP start from previous solve produced solution with objective 389.255 (0.03s)
+Loaded MIP start from previous solve with objective 389.255
+
+Presolve removed 22778 rows and 6111 columns
+Presolve time: 0.28s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.32 seconds (0.33 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 4: 389.255 389.255 389.255 389.255 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.892550737479e+02, best bound 3.892550737479e+02, gap 0.0000%
+mst's lb = 389.25507374787054, xHa = 0x613578041b46ee0c
+ub = 389.47708194320757, erravg = 0.0012031445280251247, errsum = 7.3343690428411605
+agap = 0.22200819533702543, rgap = 0.0005700160693136703
+result_analysis: 309.842231 seconds (53.46 k allocations: 2.496 MiB, 5 lock conflicts)
+    test> Ratea_K=1.06, SEEDi=7 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 390.582462 seconds (7.44 G allocations: 1009.869 GiB, 83.38% gc time, 72 lock conflicts)
+mst's lb = -77932.23685209925, xHa = 0x1bded04fb7c4d7b4
+furnish_ini_lb: 366.137318 seconds (41.69 k allocations: 2.870 MiB, 4 lock conflicts)
+M> t=2327.1s, ȷ=1, nCμ=3.4, st=331.0s, lb=564.1, Vμ=1.0e+01
+idle-M> t=4543.6s, lb=565.1, Vμ=5.0e-03
+idle-M> t=4951.7s, lb=565.1, Vμ=5.0e-03
+root_train> ter=2, seqTime=358.75402784347534, Hardness=0.0
+root_train: 4960.700853 seconds (495.65 k allocations: 34.088 MiB, 894 lock conflicts)
+x_int_che = d6083cbabfd3c18e, vio_by_LP = 6.5283e+02
+x_int_che = b93ab437c137878a, vio_by_LP = -4.0715e+01
+x_int_che = a91ae2c91297b6f2, vio_by_LP = -7.3451e+01
+x_int_che = a91ae2c91297b6f2, vio_by_LP = -7.3451e+01
+leaf_train: 38.104814 seconds (166.72 k allocations: 10.108 MiB, 477 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 21901 rows, 6111 columns and 203979 nonzeros (Min)
+Model fingerprint: 0x83a46e53
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 1e+05]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [5e-02, 8e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 565.088 (0.03s)
+MIP start from previous solve produced solution with objective 565.088 (0.03s)
+Loaded MIP start from previous solve with objective 565.088
+
+Presolve removed 21901 rows and 6111 columns
+Presolve time: 0.28s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.31 seconds (0.46 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 4: 565.088 565.088 565.088 565.088 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.650875209716e+02, best bound 5.650875209716e+02, gap 0.0000%
+mst's lb = 565.0875209716407, xHa = 0xa91ae2c91297b6f2
+ub = 565.2503996801547, erravg = 0.0014204179959929765, errsum = 8.658868103573184
+agap = 0.16287870851397201, rgap = 0.0002881531947719744
+result_analysis: 368.760688 seconds (53.46 k allocations: 2.496 MiB, 7 lock conflicts)
+    test> Ratea_K=1.0, SEEDi=8 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 386.134355 seconds (7.44 G allocations: 1009.869 GiB, 83.24% gc time, 73 lock conflicts)
+mst's lb = -62739.037507752255, xHa = 0x1bded04fb7c4d7b4
+furnish_ini_lb: 361.460762 seconds (41.69 k allocations: 2.870 MiB, 3 lock conflicts)
+  GRBgap=(r=7.2e-13, a=0.0; t=11.1), vio=5.9515e+04 <s=543
+  GRBgap=(r=1.7e-03, a=6.2; t=15.0), vio=1.5939e+03 <s=5213
+  GRBgap=(r=0.0e+00, a=0.0; t=6.8), vio=1.5100e-02 <s=1750
+root_train> ter=3, seqTime=400.5022876262665, Hardness=0.17
+root_train: 8114.997788 seconds (626.68 k allocations: 43.156 MiB, 1050 lock conflicts)
+x_int_che = 5992b1e102a24cf8, vio_by_LP = -1.7984e+02
+x_int_che = de730a6b1aac6580, vio_by_LP = -1.7984e+02
+x_int_che = de730a6b1aac6580, vio_by_LP = -1.7984e+02
+leaf_train: 34.703806 seconds (125.07 k allocations: 7.798 MiB, 355 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 22426 rows, 6111 columns and 212368 nonzeros (Min)
+Model fingerprint: 0xdafb2f9b
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 1e+05]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 9e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 1352.74 (0.03s)
+MIP start from previous solve produced solution with objective 1352.74 (0.03s)
+Loaded MIP start from previous solve with objective 1352.74
+
+Presolve removed 22426 rows and 6111 columns
+Presolve time: 0.19s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.23 seconds (0.19 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 4: 1352.74 1352.74 1352.74 1352.74 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.352739919397e+03, best bound 1.352739919397e+03, gap 0.0000%
+mst's lb = 1352.7399193970548, xHa = 0xde730a6b1aac6580
+ub = 1357.9396138797824, erravg = 0.016629807526222028, errsum = 101.37530667984947
+agap = 5.199694482727637, rgap = 0.0038291058229544825
+result_analysis: 450.310034 seconds (53.46 k allocations: 2.496 MiB, 3 lock conflicts)
+    test> Ratea_K=1.08, SEEDi=9 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 391.065088 seconds (7.44 G allocations: 1009.869 GiB, 83.23% gc time, 49 lock conflicts)
+mst's lb = -49288.491678032115, xHa = 0x33ad3773e645a5d4
+furnish_ini_lb: 329.253123 seconds (41.69 k allocations: 2.870 MiB, 17 lock conflicts)
+  GRBgap=(r=0.0e+00, a=0.0; t=6.5), vio=2.7692e+00 <s=5885
+idle-M> t=4234.3s, lb=465.7, Vμ=5.0e-03
+idle-M> t=4566.2s, lb=465.7, Vμ=5.0e-03
+root_train> ter=2, seqTime=373.4739589691162, Hardness=0.0
+root_train: 4573.463659 seconds (552.61 k allocations: 38.044 MiB, 1110 lock conflicts)
+x_int_che = 81e496a9dafd10b2, vio_by_LP = -5.0274e+01
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -5.0274e+01
+x_int_che = 968d9fa6235b9c9a, vio_by_LP = -5.0274e+01
+leaf_train: 32.699236 seconds (125.07 k allocations: 7.798 MiB, 392 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+DegenMoves  0
+Threads  1
+
+Optimize a model with 23549 rows, 6111 columns and 225466 nonzeros (Min)
+Model fingerprint: 0xeb6d9a8a
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 7e+04]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 7e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 465.803 (0.03s)
+Loaded MIP start from previous solve with objective 465.803
+
+Presolve removed 23549 rows and 6111 columns
+Presolve time: 0.29s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.32 seconds (0.32 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 3: 465.803 465.803 465.803 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.658034553514e+02, best bound 4.658034553514e+02, gap 0.0000%
+mst's lb = 465.8034553514426, xHa = 0x968d9fa6235b9c9a
+ub = 466.3358981089219, erravg = 0.001249501781615382, errsum = 7.616962860727369
+agap = 0.5324427574793162, rgap = 0.0011417580324364258
+result_analysis: 302.082622 seconds (53.46 k allocations: 2.496 MiB, 13 lock conflicts)
+    test> Ratea_K=1.04, SEEDi=10 ¶
+multi_θ master built with N = 14, S = 6096
+Data and JuMP Models: 390.820190 seconds (7.44 G allocations: 1009.869 GiB, 83.34% gc time, 62 lock conflicts)
+mst's lb = -61440.14351809078, xHa = 0x1bded04fb7c4d7b4
+furnish_ini_lb: 398.825627 seconds (41.69 k allocations: 2.870 MiB, 7 lock conflicts)
+  GRBgap=(r=0.0e+00, a=0.0; t=10.2), vio=6.8297e+04 <s=3446
+idle-M> t=5990.6s, lb=939.3, Vμ=5.0e-03
+idle-M> t=6564.9s, lb=939.3, Vμ=5.0e-03
+idle-M> t=7019.2s, lb=939.3, Vμ=5.0e-03
+root_train> ter=2, seqTime=271.3276343345642, Hardness=0.02
+root_train: 7031.247854 seconds (624.46 k allocations: 42.993 MiB, 0.01% gc time, 773 lock conflicts)
+x_int_che = de730a6b1aac6580, vio_by_LP = -1.3444e+02
+x_int_che = de730a6b1aac6580, vio_by_LP = -1.3444e+02
+leaf_train: 29.173681 seconds (83.42 k allocations: 5.488 MiB, 159 lock conflicts)
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 19347 rows, 6111 columns and 189093 nonzeros (Min)
+Model fingerprint: 0x037bb20b
+Model has 6096 linear objective coefficients
+Variable types: 6097 continuous, 14 integer (14 binary)
+Coefficient statistics:
+  Matrix range     [1e-13, 1e+05]
+  Objective range  [2e-04, 2e-04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+03]
+Warning: Model contains large matrix coefficient range
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+
+MIP start from previous solve produced solution with objective 939.34 (0.03s)
+MIP start from previous solve produced solution with objective 939.34 (0.03s)
+Loaded MIP start from previous solve with objective 939.34
+
+Presolve removed 19347 rows and 6111 columns
+Presolve time: 0.15s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.18 seconds (0.15 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 4: 939.34 939.34 939.34 939.34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 9.393399911724e+02, best bound 9.393399911724e+02, gap 0.0000%
+mst's lb = 939.3399911724186, xHa = 0xde730a6b1aac6580
+ub = 939.540202073512, erravg = 0.00600536105074393, errsum = 36.608680965335
+agap = 0.20021090109332818, rgap = 0.00021309455481678598
+result_analysis: 359.701056 seconds (53.46 k allocations: 2.496 MiB, 7 lock conflicts)
