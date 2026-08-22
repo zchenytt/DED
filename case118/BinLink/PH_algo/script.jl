@@ -83,3 +83,51 @@ tBotΣ = 0.; t0 = time_ns(); while true
         Settings.opt_ass_opt(n)
     end
 end
+
+# Below are ADMM (only differs in x_common)
+const X = similar(sub[1].Xl); # x_common
+k = 0
+Threads.@threads for n = sub
+    JuMP.set_attribute(n.m, "Method", 1)
+    Settings.opt_ass_opt(n)
+end
+tBotΣ = 0.; t0 = time_ns()
+while true
+    cm = Settings.Model(Settings.Env()) # common model
+    JuMP.@variable(cm, x[eachindex(X)])
+    e = JuMP.QuadExpr()
+    tbot = 0.; for n = sub
+        tbot = max(tbot, Settings.getmodeldblattr(n, "Runtime"))
+        (; Pi, Xl) = n
+        Gurobi.GRBgetdblattrarray(n.o, "X", 0, n.N, Xl) # Xs update
+        qd = JuMP.@expression(cm, 0.5ρ * sum((i-j)^2 for (i,j)=zip(x,Xl)))
+        JuMP.add_to_expression!(e, qd)
+        for (Pi, x)=zip(Pi, x)
+            JuMP.add_to_expression!(e, -Pi, x)
+        end
+    end
+    tBotΣ += tbot; # x_common update
+    JuMP.@objective(cm, Min, e)
+    JuMP.optimize!(cm)
+    JuMP.termination_status(cm) == JuMP.OPTIMAL || error("common model JuMP optimize!")
+    mst_time = JuMP.solve_time(cm)
+    tBotΣ += mst_time
+    Gurobi.GRBgetdblattrarray(cm.moi_backend, "X", 0, length(X), X) == 0 || error() # x_common update
+    for n = sub
+        (; Pi, Xl) = n
+        Xl .-= X
+        @. Pi = Pi + ρ * Xl # multiplier update
+    end
+    rsd = maximum(LinearAlgebra.norm(n.Xl, Inf) for n=sub)
+    t_elps = 1e-9(time_ns()-t0)
+    println("k = $k, rsd = $rsd, t_elps=$t_elps, tBotΣ=$tBotΣ, mst_time=$mst_time")
+    rsd > 1e-6 || break
+    tBotΣ > 9e2 && break
+    k += 1                          # iterate update
+    Threads.@threads for n = sub
+        (; m, Qy, Pi, xs) = n
+        JuMP.@objective(m, Min, Qy + Pi'xs + 0.5ρ * sum((i-j)^2 for (i,j)=zip(xs,X)))
+        Settings.opt_ass_opt(n)
+    end
+end
+
