@@ -1,8 +1,7 @@
 Run our two-layer UPPER algorithm for 5 minutes to fix the integer variables,
-
 Run Mono-GRB-direct-MILP (default mode) for 5 minutes, to get the deterministic ub and lb.
-
 Finally compare the ub derived by our algo and Gurobi default
+（Tested under S=15）
 
 SEEDi = 0
 julia> result_analysis(mst, sub)
