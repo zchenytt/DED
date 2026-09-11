@@ -1,0 +1,91 @@
+julia> m = Mono.Model(
+           genv, S, T, Δtˈ1h_ratio,
+           Ratea, F, CaD,
+           EVnode, EVLmax, EVL01, EVEmax, EVEini,
+           Bxini, Enode, EEmax, EEini, EPminDiv,
+           WPmax,Wscnvec,Wnode,
+           LPmax,LmuTup,Ltype,Lnode,
+           GPmax,GPref,Gnode
+       )
+A JuMP Model
+├ mode: DIRECT
+├ solver: Gurobi
+├ objective_sense: MIN_SENSE
+│ └ objective_function_type: JuMP.AffExpr
+├ num_variables: 2491024
+├ num_constraints: 6136500
+│ ├ JuMP.VariableRef in MOI.EqualTo{Float64}: 8000
+│ ├ JuMP.AffExpr in MOI.EqualTo{Float64}: 122500
+│ ├ JuMP.VariableRef in MOI.ZeroOne: 91000
+│ ├ JuMP.AffExpr in MOI.LessThan{Float64}: 2600000
+│ ├ JuMP.VariableRef in MOI.GreaterThan{Float64}: 2301000
+│ └ JuMP.VariableRef in MOI.LessThan{Float64}: 1014000
+└ Names registered in the model
+  └ :bES, :bES_com, :bu, :bv, :bx, :bx_com, :eS, :eS_com, :eV, :eV_com, :pDR, :pES, :pEV, :pϵ, :r, :ζ, :ϖ
+
+julia> JuMP.unset_silent(m)
+Set parameter OutputFlag to value 1
+
+julia> JuMP.set_attribute(m, "TimeLimit", 15 * 60)
+Set parameter TimeLimit to value 900
+
+julia> JuMP.optimize!(m)
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64gpu - "Ubuntu 24.04.4 LTS")
+
+CPU model: AMD EPYC 7763 64-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 128 physical cores, 256 logical processors, using up to 1 threads
+
+GPU model: NVIDIA RTX A6000, CUDA compute version 8.6, NVIDIA driver compatible with CUDA version 13
+
+Non-default parameters:
+TimeLimit  900
+Threads  1
+
+Optimize a model with 2722500 rows, 2491024 columns and 302632000 nonzeros (Min)
+Model fingerprint: 0xef9962b2
+Model has 2210000 linear objective coefficients
+Variable types: 2400024 continuous, 91000 integer (91000 binary)
+Coefficient statistics:
+  Matrix range     [2e-06, 1e+02]
+  Objective range  [3e-03, 1e+04]
+  Bounds range     [8e-04, 5e+01]
+  RHS range        [3e-07, 3e+01]
+
+Presolve removed 0 rows and 0 columns (presolve time = 12s)...
+Presolve removed 306211 rows and 159812 columns (presolve time = 424s)...
+Presolve removed 202211 rows and 55812 columns
+Presolve time: 423.90s
+Presolved: 2520289 rows, 2435212 columns, 191696605 nonzeros
+Variable types: 2350067 continuous, 85145 integer (85145 binary)
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -5.8732817e+04   2.072547e+06   0.000000e+00    575s
+  100623   -1.1890268e+04   1.372198e+08   0.000000e+00    678s
+Warning: Markowitz tolerance tightened to 0.03125
+  109684   -1.0855034e+04   3.668312e+09   0.000000e+00    689s
+  141033   -8.6718392e+03   5.895776e+08   0.000000e+00    729s
+Warning: Markowitz tolerance tightened to 0.0625
+  153806   -8.2558291e+03   1.153672e+11   0.000000e+00    745s
+  245567   -3.8742176e+03   2.018554e+09   0.000000e+00    874s
+
+Root relaxation: time limit, 254819 iterations, 435.95 seconds (407.06 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0          -    0               - -64750.797      -     -  900s
+
+Explored 1 nodes (254819 simplex iterations) in 901.39 seconds (1109.89 work units)
+Thread count was 1 (of 256 available processors)
+
+Solution count 0
+
+Time limit reached
+Best objective -, best bound -6.475079718075e+04, gap -
+
+User-callback calls 45041, time in user-callback 0.03 sec
+
+julia> S
+500
