@@ -24,3 +24,27 @@ plot_brac(ax, m, 3., :tomato)
 plot_brac(ax, s1, 2., :cyan)
 plot_brac(ax, s7, 1., :navy)
 save("halfNtimes.pdf", f)
+
+
+
+
+
+using CairoMakie
+# 物理调度结果, under S = 15, Threads=(15,1)
+wp1 = [6.96234, 5.45377, 4.62335, 4.50068, 6.50659, 5.48422, 6.87936, 5.28837, 6.13483, 7.11946, 6.22411, 6.23323, 5.03193]
+etot1 = [27.5632, 27.9226, 27.4145, 24.8379, 29.1255, 32.2184, 31.4182, 26.7776, 29.3665, 28.935, 27.622, 28.2895, 30.2486, 25.0718]
+wp4 = [6.962341476902308, 6.2157556670290095, 7.390826553575782, 6.320926235404665, 6.686195634766926, 6.524409316317765, 8.265604187210092, 6.782844489905771, 6.714883201812596, 5.20133747526813, 7.015913648258623, 4.613733207475701, 3.8179006384263388]
+etot4 = [27.56324, 27.922647153915513, 29.030107443068864, 27.636590537228653, 32.43395885462526, 33.96016878197916, 30.544900692785646, 30.685212542783916, 34.59910530245762, 34.4827570373597, 29.542078141342046, 27.154820268889875, 29.431259630512184, 25.01475362634204]
+function plot1scene(axw, axe, etot, wp, c, ma)
+    lines!(axe, range(-1; length=14), etot; color = c, linewidth=0.1)
+    scatter!(axe, range(-1; length=14), etot; color = c, marker = ma)
+    lines!(axw, [-1, 0], [wp[1], wp[1]]; color = :white)
+    lines!(axw, 0:12, wp; color = c, linewidth=0.1)
+    scatter!(axw, 0:12, wp; color = c, marker = ma)
+end
+f = Figure(size=(550,280), figure_padding = 0.9);
+axw = Axis(f[1, 1], ylabel="风电功率(百MW)", xticksvisible=false, xticklabelsvisible=false, xgridvisible = false,ygridvisible = false)
+axe = Axis(f[2, 1], ylabel="储电量(百MWh)", xlabel="时段", xticks=-1:1:12, xgridvisible = false,ygridvisible = false)
+plot1scene(axw, axe, etot1, wp1, :navy, :circle)
+plot1scene(axw, axe, etot4, wp4, :blue, :star5)
+save("physics.pdf", f)
