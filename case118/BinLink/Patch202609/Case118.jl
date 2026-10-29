@@ -1,9 +1,9 @@
 """
 Approximate Footprint: It spans a region of roughly 500 km in length by 350 km in width (approximately 175,000 km^2).
-
-original generators capacity_sum = 65.15
-original load = 42.42
-added wind capacity = 40.2 (wind penetration = 38%)
+Base = 100MVA
+original generators capacity_sum = 65.15 p.u.
+original load = 42.42 p.u.
+added wind capacity = 40.2 p.u. (wind penetration = 38%)
 Thereby we can scale up the load to 1.94x (We've verified that the transmission capacity is sufficient after scaling up)
 
 Due to these modifications, RateA needs to be enlarged properly.
@@ -77,6 +77,17 @@ function get_myGPmax(CaD, Ggvec)
     end
     GPmax
 end
+
+"""
+In the original IEEE 118-bus .m case file, you see these
+    %% generator cost data
+    %	2	startup	shutdown	n	c(n-1)	...	c0
+    mpc.gencost = [
+        2	 0.0	 0.0	 3	   0.000000	  24.983420	   0.000000; % NG
+        2	 0.0	 0.0	 3	   0.000000	 124.581564	   0.000000; % PEL
+    ]
+It means that 24.98USD/MWh is the marginal (linear) cost of NG (This is not related to Base = 100MVA)
+"""
 get_GClin(CaD, Ggvec) = [0.001CaD["gen"][string(g)]["cost"][2] for g = Ggvec]
 
 "This is a helper function"
